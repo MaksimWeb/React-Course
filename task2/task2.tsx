@@ -52,7 +52,7 @@ const homeTask: MyPartial<IHome> = {
 }
 
 // 5
-function HomeComponent(props: { firstProp: 'ss', lol: 34 }) {
+function HomeComponent(props: { firstProp: string, lol: number }) {
     return (
         <div>
             {props.firstProp}
@@ -60,8 +60,7 @@ function HomeComponent(props: { firstProp: 'ss', lol: 34 }) {
     )
 }
 
-type My<T> = T extends { [n in keyof T]: infer R } ? m<R> : never
-type m<T> = T extends { [n in keyof T]: infer Z } ? Z : never
+type RCArgsType<T> = T extends (...args: infer U) => any ? U : never;
+type OnlyPropsType<T> = RCArgsType<T>[0] extends {[key: string]: infer  U} ? U : never;
 
-type TMyType<T> = T extends (...args: infer U) => any ? TMyType<U> : My<T>
-type t = TMyType<typeof HomeComponent>
+type TMyType = OnlyPropsType<typeof HomeComponent>
